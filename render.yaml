@@ -1,0 +1,56 @@
+services:
+  - type: web
+    runtime: python
+    name: statscholar-api
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # numpy 1.26 / pandas 2.2 / scipy 1.13 (pinned in requirements.txt)
+      # only ship prebuilt wheels up to Python 3.12 — without this, Render
+      # can pick a newer default Python and the build fails compiling them.
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: STATSCHOLAR_SECRET_KEY
+        generateValue: true
+      # Deliberately NOT using Render's own free Postgres here — it gets
+      # deleted after 30 days. Create a free database at neon.tech instead
+      # (no expiry) and paste its connection string as this variable's
+      # value in the Render dashboard after your first deploy — see
+      # docs/DEPLOYMENT.md for the exact steps.
+      - key: STATSCHOLAR_DATABASE_URL
+        sync: false
+      # Update these two after your first deploy, once you know the real
+      # URLs Render assigned to both services (see docs/DEPLOYMENT.md) —
+      # the values below are just the URLs you'd get if the plain names
+      # "statscholar" / "statscholar-api" are available.
+      - key: STATSCHOLAR_FRONTEND_BASE_URL
+        value: https://statscholar.onrender.com
+      - key: STATSCHOLAR_CORS_ORIGINS
+        value: '["https://statscholar.onrender.com"]'
+      # Optional — leave unset to keep the dev-mode email fallback
+      # (verification/reset links print to this service's logs instead of
+      # actually sending). Set all three to send real email.
+      - key: STATSCHOLAR_SMTP_HOST
+        sync: false
+      - key: STATSCHOLAR_SMTP_USERNAME
+        sync: false
+      - key: STATSCHOLAR_SMTP_PASSWORD
+        sync: false
+
+  - type: web
+    runtime: static
+    name: statscholar
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # Update this after your first deploy to match the real URL Render
+      # assigned to the statscholar-api service.
+      - key: VITE_API_BASE_URL
+        value: https://statscholar-api.onrender.com

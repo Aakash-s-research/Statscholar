@@ -1,0 +1,28 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.core.config import settings
+from app.routers import auth, correlation, data, descriptive, regression, report, trend, visualization
+
+app = FastAPI(title=settings.app_name)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+app.include_router(data.router)
+app.include_router(descriptive.router)
+app.include_router(trend.router)
+app.include_router(correlation.router)
+app.include_router(regression.router)
+app.include_router(report.router)
+app.include_router(visualization.router)
+
+
+@app.get("/")
+async def root():
+    return {"app": settings.app_name, "status": "ok"}
