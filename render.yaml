@@ -29,9 +29,21 @@ services:
         value: https://statscholar.onrender.com
       - key: STATSCHOLAR_CORS_ORIGINS
         value: '["https://statscholar.onrender.com"]'
-      # Optional — leave unset to keep the dev-mode email fallback
-      # (verification/reset links print to this service's logs instead of
-      # actually sending). Set all three to send real email.
+      # Optional — leave both unset to keep the dev-mode email fallback
+      # (verification/reset links print to this service's Logs tab instead
+      # of actually sending). Set both to send real email — this is the
+      # RECOMMENDED path on Render's free tier: Render blocks outbound SMTP
+      # ports (25/465/587) on free web services as a platform policy, so
+      # the SMTP_* variables below cannot work here regardless of how
+      # correct the credentials are, even though they work fine locally.
+      # Brevo (brevo.com) sends over HTTPS instead, which isn't blocked —
+      # free forever, 300 emails/day, no card required. See docs/DEPLOYMENT.md.
+      - key: STATSCHOLAR_BREVO_API_KEY
+        sync: false
+      - key: STATSCHOLAR_BREVO_SENDER_EMAIL
+        sync: false
+      # SMTP works locally, or on a paid Render plan — NOT on Render's free
+      # tier (see above). Leave unset here unless you've upgraded the plan.
       - key: STATSCHOLAR_SMTP_HOST
         sync: false
       - key: STATSCHOLAR_SMTP_USERNAME

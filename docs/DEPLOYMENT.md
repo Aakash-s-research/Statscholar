@@ -67,16 +67,40 @@ someone; noticeable on a "check back later" link.
 datasets at this app's scope, but worth knowing if you plan to upload
 many large files over time.
 
-### Email is still in dev mode until you configure SMTP
-Verification and password-reset emails won't actually send until you set
-`STATSCHOLAR_SMTP_HOST`, `STATSCHOLAR_SMTP_USERNAME`, and
-`STATSCHOLAR_SMTP_PASSWORD` in the `statscholar-api` service's
-environment variables (a Gmail account with an
-[app password](https://support.google.com/accounts/answer/185833) works
-for light use). Until then, verification/reset links appear in the
-`statscholar-api` service's logs in the Render dashboard — same dev-mode
-behavior as running locally. This part isn't free-vs-paid; it's just
-optional either way.
+### Real email requires Brevo, not SMTP — on Render's free tier
+
+Until you configure this, verification/reset links appear in the
+`statscholar-api` service's Logs tab in the Render dashboard, instead of
+actually being emailed — same dev-mode behavior as running locally.
+
+**Render's free web services block outbound traffic on SMTP ports
+(25/465/587)** as a platform policy (in effect since September 2025) —
+this isn't fixable by entering different SMTP credentials, it's blocked
+at the network level regardless of what's correct or not. Gmail's SMTP
+server (or any SMTP server) simply cannot be reached from a free Render
+service. SMTP works fine locally, and works on a paid Render plan, but
+not on the free tier.
+
+For real email on the free tier, use **Brevo** instead — it sends over
+HTTPS, which Render's block doesn't touch. Free forever, 300 emails/day,
+no card required:
+
+1. Go to [brevo.com](https://www.brevo.com), sign up (no card).
+2. In your Brevo dashboard, go to **SMTP & API** settings → **API Keys**
+   tab → **Generate a new API key**. Name it anything, copy the key shown
+   (Brevo only displays it once).
+3. In Render, open `statscholar-api` → **Environment**, and set:
+   - `STATSCHOLAR_BREVO_API_KEY` to the key you just copied
+   - `STATSCHOLAR_BREVO_SENDER_EMAIL` to an email address you control
+     (Brevo may ask you to verify this sender address the first time)
+4. Save. The backend restarts, and Brevo takes over automatically —
+   nothing else to configure, and the SMTP variables can stay empty.
+
+If `STATSCHOLAR_BREVO_API_KEY` is set, the app uses Brevo automatically
+and ignores the SMTP variables entirely. If a Brevo send ever fails (bad
+key, hit the daily limit), the app logs the error and falls back to the
+same dev-mode logging — signup/reset still work, you'd just need to check
+the Logs tab for that one link instead.
 
 ### The JWT secret key
 `render.yaml` already handles this correctly (`generateValue: true` makes

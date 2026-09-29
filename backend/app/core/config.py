@@ -33,11 +33,23 @@ class Settings(BaseSettings):
     # SMTP — leave unset to use the dev-mode fallback (email content is
     # logged instead of sent). Set all three (host, username, password) via
     # environment variables (STATSCHOLAR_SMTP_HOST etc.) to send real email.
+    #
+    # NOTE: Render's free web services block outbound traffic on SMTP ports
+    # 25/465/587 (a platform policy since Sept 2025, not fixable via
+    # credentials) — SMTP here only works locally or on a paid Render plan.
+    # For free-tier deployment, set STATSCHOLAR_BREVO_API_KEY instead (see
+    # below) — it sends over HTTPS, which isn't blocked.
     smtp_host: str = ""
     smtp_port: int = 587
     smtp_username: str = ""
     smtp_password: str = ""
     smtp_from_email: str = ""
+
+    # Brevo (brevo.com) transactional email API — sends over HTTPS, so it
+    # works on Render's free tier where SMTP does not. Free forever, 300
+    # emails/day, no card required. Takes priority over SMTP when set.
+    brevo_api_key: str = ""
+    brevo_sender_email: str = ""
 
     # JWT signing secret. This default is fine for local/single-machine use
     # (nobody else can reach this process to forge a token), but MUST be

@@ -79,7 +79,8 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-78 tests: 12 unit tests on the trend-test math directly, 66 integration
+84 tests: 12 unit tests on the trend-test math directly, 6 on the email
+service's Brevo/SMTP/dev-mode fallback logic, and 66 integration
 tests through the live API (including regression tests for two real bugs
 found during development — see `docs/TECHNICAL_REFERENCE.md` for details).
 
@@ -171,6 +172,15 @@ genuinely homogeneous from heterogeneous seasonal trends).
   PostgreSQL server, not just assumed, including a real bug this caught:
   the test suite's database-reset-between-runs logic only worked for
   SQLite until fixed. See `core/db.py` and `docs/DEPLOYMENT.md`.
+- **Real email on Render's free tier, via Brevo instead of SMTP** —
+  discovered mid-deployment that Render blocks outbound SMTP traffic on
+  its free web services as a platform policy (since Sept 2025), so no
+  SMTP configuration, however correct, can actually send email there.
+  `email_service.py` now tries Brevo's HTTPS API first (which isn't
+  blocked), falls back to SMTP (for local dev or a paid Render plan), and
+  falls back again to the dev-mode log/print if either one fails — none
+  of which ever breaks the signup/reset request that triggered it. See
+  `docs/DEPLOYMENT.md` for the Brevo setup steps.
 
 ## Deliberately out of scope for v1
 
