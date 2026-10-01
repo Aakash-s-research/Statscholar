@@ -35,7 +35,6 @@ export default function AuthBrandPanel() {
 
       <div style={{ fontFamily: mono, fontSize: 11, color: "#7B8AA8" }}>
         {MODULES.length - 1} modules · data preparation to finished report
-      </div>
-    </div>
-  );
+      </div> <div style={{ fontSize: 10.5, color: "#5F7089", lineHeight: 1.5, marginTop: 4 }}> © {new Date().getFullYear()} Aakash S<br /> PhD Scholar, Soil and Water Conservation Engineering<br /> Tamil Nadu Agricultural University </div> </div> </div> );
+    
 }
