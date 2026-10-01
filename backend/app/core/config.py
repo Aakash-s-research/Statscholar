@@ -15,7 +15,11 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="STATSCHOLAR_")
 
     app_name: str = "StatScholar"
-    cors_origins: list[str] = ["http://localhost:5173"]  # Vite dev server
+    cors_origins: list[str] = [
+	"http://localhost:5173",
+	"http://127.0.0.1:5173",
+	"http://statscholar.onrender.com",
+]  # Vite dev server
     max_upload_mb: int = 25
     default_alpha: float = 0.05  # significance threshold used across all test modules
 
