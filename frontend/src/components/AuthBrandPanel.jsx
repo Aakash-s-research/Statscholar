@@ -120,10 +120,15 @@ export default function AuthBrandPanel() {
       <div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <Logo />
-          <div style={{ fontFamily: serif, fontSize: 28, fontWeight: 600 }}>StatScholar</div>
+          <div>
+            <div style={{ fontFamily: serif, fontSize: 28, fontWeight: 600, lineHeight: 1.1 }}>StatScholar</div>
+            <div style={{ fontFamily: mono, fontSize: 10.5, letterSpacing: 2, color: "#8FC4BE", marginTop: 5 }}>
+              ADVANCED MANN-KENDALL TREND SUITE
+            </div>
+          </div>
         </div>
         <div style={{ fontSize: 13.5, color: "#B9C2D4", marginTop: 10, lineHeight: 1.6, maxWidth: 320 }}>
-          A statistical analysis platform anchored by a complete Mann-Kendall trend-analysis suite.
+          Upload your time series, test the trend, and export a finished report, all in one place.
         </div>
       </div>
 
