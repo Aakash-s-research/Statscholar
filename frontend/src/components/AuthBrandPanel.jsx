@@ -58,7 +58,7 @@ function Logo({ size = 48 }) {
 // Raw data -> trend test -> report, over a soft river band
 function WorkflowIllustration() {
   return (
-    <svg viewBox="0 0 460 250" width="100%" aria-hidden="true" style={{ display: "block" }}>
+    <svg viewBox="0 0 460 250" width="100%" height="100%" aria-hidden="true" style={{ display: "block", maxHeight: 270 }}>
       <defs>
         <linearGradient id="riverFade" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor="#8FC4BE" stopOpacity="0" />
@@ -113,7 +113,8 @@ export default function AuthBrandPanel() {
       style={{
         width: "42%", minWidth: 340, background: T.sidebarGradient, color: "#fff",
         display: "flex", flexDirection: "column", justifyContent: "space-between",
-        padding: "48px 44px",
+        padding: "36px 44px", boxSizing: "border-box",
+        height: "100vh", position: "sticky", top: 0, alignSelf: "flex-start", overflow: "hidden",
       }}
     >
       <div>
@@ -126,11 +127,11 @@ export default function AuthBrandPanel() {
         </div>
       </div>
 
-      <div style={{ padding: "8px 0" }}>
+      <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", padding: "8px 0" }}>
         <WorkflowIllustration />
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {FEATURES.map((f) => (
           <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <span style={{ color: "#8FC4BE", fontFamily: mono, fontSize: 13, marginTop: 1 }}>✓</span>
@@ -139,7 +140,7 @@ export default function AuthBrandPanel() {
         ))}
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 24 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 14 }}>
         <div style={{ fontFamily: mono, fontSize: 11, color: "#7B8AA8" }}>
           {MODULES.length - 1} modules · data preparation to finished report
         </div>
