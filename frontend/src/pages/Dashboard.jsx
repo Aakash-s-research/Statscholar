@@ -41,7 +41,7 @@ const MODULE_DETAILS = {
 export default function Dashboard({ dataset, onDatasetLoaded }) {
   const [error, setError] = useState(null);
   const [dragOver, setDragOver] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(true);
+  const [showExplanation, setShowExplanation] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
 
