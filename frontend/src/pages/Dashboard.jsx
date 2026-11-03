@@ -72,7 +72,7 @@ export default function Dashboard({ dataset, onDatasetLoaded }) {
           </button>
         </div>
         <div style={{ fontSize: 14.5, color: "#5A6B72", marginTop: 6 }}>
-          A general-purpose statistical analysis platform anchored by a complete Mann-Kendall trend-analysis suite — correlation, regression, and automated reporting built in.
+          A statistical analysis platform anchored by a complete Mann-Kendall trend-analysis suite — correlation, regression, and automated reporting built in.
         </div>
       </div>
 
