@@ -20,7 +20,7 @@ export default function AuthBrandPanel() {
       <div>
         <div style={{ fontFamily: serif, fontSize: 26, fontWeight: 600 }}>StatScholar</div>
         <div style={{ fontSize: 13.5, color: "#B9C2D4", marginTop: 8, lineHeight: 1.6, maxWidth: 320 }}>
-          A general-purpose statistical analysis platform anchored by a complete Mann-Kendall trend-analysis suite.
+          A statistical analysis platform anchored by a complete Mann-Kendall trend-analysis suite.
         </div>
       </div>
 
